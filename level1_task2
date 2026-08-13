@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nextora - Landing Page</title>
+<style>
+
+  /* ---------- STEP 1: RESET ----------
+     Browsers add their own default spacing.
+     We remove it so OUR css controls everything. */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* padding won't add extra width, easier maths */
+  }
+
+  body {
+    font-family: 'Poppins', Arial, sans-serif;
+    color: #1c1c1c;
+  }
+
+  /* ---------- STEP 2: OUTER WRAPPER ----------
+     This is the light-grey background you see
+     behind the white card in the screenshot. */
+  .page-wrapper {
+    background: #e8e9ee;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+
+  /* ---------- STEP 3: THE MAIN CARD ----------
+     Everything (navbar + hero) sits inside this
+     rounded, cream-white box. */
+  .card {
+    max-width: 1300px;
+    margin: 0 auto;         /* centers the card horizontally */
+    background: #fbfaf6;
+    border-radius: 18px;
+    overflow: hidden;       /* keeps the green corner inside rounded edges */
+    position: relative;
+  }
+
+  /* ---------- STEP 4: NAVBAR ----------
+     display:flex + justify-content:space-between
+     is the #1 trick for navbars: logo left,
+     links middle, buttons right. */
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 60px;
+    position: relative;
+    z-index: 2; /* stays above the green shape */
+  }
+
+  .logo {
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 34px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: #1c1c1c;
+    font-size: 15px;
+  }
+
+  .nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .login-link {
+    text-decoration: none;
+    color: #1c1c1c;
+    font-size: 15px;
+  }
+
+  .signup-btn {
+    background: #fff;
+    color: #1c1c1c;
+    padding: 10px 22px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  /* ---------- STEP 5: HERO SECTION ----------
+     Two columns side-by-side: text on the left,
+     image on the right. display:flex again! */
+  .hero {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-bottom: 60px;
+  }
+
+  /* The dark green diagonal-looking block behind the photo.
+     It's just an absolutely positioned rectangle. */
+  .green-shape {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 42%;
+    height: 100%;
+    background: #2f5a4e;
+    z-index: 0;
+  }
+
+  .hero-text {
+    flex: 1;
+    padding: 20px 60px 0 60px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-text h1 {
+    font-size: 46px;
+    line-height: 1.2;
+    font-weight: 500;
+    margin-bottom: 22px;
+  }
+
+  .hero-text p {
+    font-size: 15px;
+    color: #555;
+    max-width: 420px;
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+
+  .hero-buttons {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 50px;
+  }
+
+  .get-started {
+    background: #e0703f;   /* orange button */
+    color: #fff;
+    text-decoration: none;
+    padding: 13px 26px;
+    border-radius: 24px;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .explore-link {
+    text-decoration: none;
+    color: #1c1c1c;
+    font-size: 15px;
+    border-bottom: 1px solid #1c1c1c;
+    padding-bottom: 2px;
+  }
+
+  /* Logo strip at the bottom left (Ovalism, Orbital, Webflow...) */
+  .brand-strip {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .brand-strip span {
+    font-size: 16px;
+    font-weight: 600;
+    color: #444;
+    opacity: 0.8;
+  }
+
+  /* ---------- STEP 6: HERO IMAGE CARD ---------- */
+  .hero-image-wrap {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+    padding: 0 60px 0 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .hero-image-card {
+    position: relative;
+    width: 90%;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  }
+
+  .hero-image-card img {
+    width: 100%;
+    display: block;
+    height: 430px;
+    object-fit: cover;
+  }
+
+  /* The little floating "Active 2k Members" pill */
+  .badge {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .badge .avatars {
+    display: flex;
+  }
+
+  .badge .avatars span {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ddd;
+    border: 2px solid #fff;
+    margin-left: -8px;
+  }
+  .badge .avatars span:first-child { margin-left: 0; }
+
+  /* ---------- STEP 7: RESPONSIVE (MOBILE) ----------
+     A media query says: "if the screen is narrow,
+     apply these different rules instead." */
+  @media (max-width: 900px) {
+    .navbar { flex-direction: column; gap: 16px; padding: 24px; }
+    .nav-links { flex-wrap: wrap; justify-content: center; }
+    .hero { flex-direction: column; }
+    .green-shape { display: none; }
+    .hero-text, .hero-image-wrap { padding: 20px 24px; }
+    .hero-text h1 { font-size: 32px; }
+    .hero-image-wrap { justify-content: center; }
+    .hero-image-card { width: 100%; }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+  <div class="card">
+
+    <!-- The green background block behind the photo -->
+    <div class="green-shape"></div>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+      <div class="logo">Nextora.</div>
+
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Pricing</a></li>
+      </ul>
+
+      <div class="nav-buttons">
+        <a href="#" class="login-link">Log in</a>
+        <a href="#" class="signup-btn">Sign up</a>
+      </div>
+    </nav>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero">
+
+      <div class="hero-text">
+        <h1>Empower Your Business with Modern Solutions</h1>
+        <p>Drive growth, enhance productivity, and achieve more with our innovative services tailored for modern enterprises.</p>
+
+        <div class="hero-buttons">
+          <a href="#" class="get-started">Get Started</a>
+          <a href="#" class="explore-link">Explore Services</a>
+        </div>
+
+        <div class="brand-strip">
+          <span>Ovalism</span>
+          <span>Orbital</span>
+          <span>Webflow</span>
+        </div>
+      </div>
+
+      <div class="hero-image-wrap">
+        <div class="hero-image-card">
+          <div class="badge">
+            <div class="avatars">
+              <span></span><span></span><span></span>
+            </div>
+            Active 2k Members
+          </div>
+          <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&q=80" alt="Woman working on laptop">
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+</div>
+
+</body>
+</html>
