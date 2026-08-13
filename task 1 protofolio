@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tonmoy | Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+  /* ============================================
+     STEP 1: RESET + VARIABLES
+     Variables = colors/fonts we reuse everywhere.
+     Change one value here, whole site updates.
+  ============================================ */
+  :root{
+    --navy:#10182B;
+    --navy-soft:#1A2540;
+    --accent:#4361EE;
+    --accent-light:#5B7CFA;
+    --bg:#F6F7FB;
+    --text-dark:#101828;
+    --text-muted:#5B6478;
+    --white:#ffffff;
+    --radius:14px;
+    --shadow: 0 10px 30px rgba(16,24,43,0.08);
+    --font-head:'Poppins', sans-serif;
+    --font-body:'Inter', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--font-body); color:var(--text-dark); background:var(--bg); line-height:1.6;}
+  a{text-decoration:none; color:inherit;}
+  ul{list-style:none;}
+  img{max-width:100%; display:block;}
+  section{padding:90px 8%;}
+  h1,h2,h3{font-family:var(--font-head);}
+  .eyebrow{
+    display:inline-block; text-transform:uppercase; letter-spacing:2px;
+    font-size:13px; font-weight:600; color:var(--accent); margin-bottom:10px;
+  }
+  .section-title{font-size:34px; font-weight:700; margin-bottom:16px;}
+  .section-sub{color:var(--text-muted); max-width:600px; margin-bottom:50px;}
+  .btn{
+    display:inline-block; padding:14px 30px; border-radius:8px; font-weight:600;
+    font-size:15px; cursor:pointer; border:none; transition:.25s ease;
+  }
+  .btn-primary{background:var(--accent); color:var(--white);}
+  .btn-primary:hover{background:var(--accent-light); transform:translateY(-2px);}
+  .btn-outline{background:transparent; border:2px solid var(--white); color:var(--white);}
+  .btn-outline:hover{background:var(--white); color:var(--navy);}
+
+  /* ============================================
+     STEP 2: HEADER / NAVBAR
+     position:fixed keeps it stuck at top while scrolling
+  ============================================ */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 8%; background:rgba(16,24,43,0.9); backdrop-filter:blur(8px);
+  }
+  .logo{color:var(--white); font-family:var(--font-head); font-weight:700; font-size:22px;}
+  .logo span{color:var(--accent-light);}
+  nav ul{display:flex; gap:32px;}
+  nav a{color:#DDE1EF; font-size:14px; font-weight:500; transition:.2s;}
+  nav a:hover{color:var(--accent-light);}
+  .menu-toggle{display:none; color:white; font-size:26px; background:none; border:none; cursor:pointer;}
+
+  /* ============================================
+     STEP 3: HERO / HOME SECTION
+     grid = splits into two columns (text | image)
+  ============================================ */
+  #home{
+    background:linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 100%);
+    color:var(--white);
+    display:grid; grid-template-columns:1.1fr 0.9fr; align-items:center; gap:40px;
+    min-height:100vh; padding-top:140px;
+  }
+  #home .eyebrow{color:var(--accent-light);}
+  #home h1{font-size:46px; font-weight:800; margin-bottom:20px; line-height:1.2;}
+  #home p{color:#B7BEDA; font-size:16px; max-width:480px; margin-bottom:32px;}
+  .hero-btns{display:flex; gap:16px;}
+  .avatar-wrap{
+    width:320px; height:320px; border-radius:50%; margin:0 auto;
+    background:linear-gradient(135deg, var(--accent), var(--accent-light));
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-head); font-size:90px; font-weight:800; color:white;
+    box-shadow:0 20px 50px rgba(67,97,238,0.4);
+    border:8px solid rgba(255,255,255,0.1);
+  }
+
+  /* ============================================
+     STEP 4: ABOUT SECTION
+  ============================================ */
+  #about{display:grid; grid-template-columns:0.9fr 1.1fr; gap:60px; align-items:center;}
+  .about-photo{
+    width:100%; aspect-ratio:1/1.1; border-radius:var(--radius);
+    background:linear-gradient(160deg,#1A2540,#4361EE); box-shadow:var(--shadow);
+    display:flex; align-items:center; justify-content:center;
+    color:white; font-family:var(--font-head); font-size:70px; font-weight:800;
+  }
+  .about-text p{color:var(--text-muted); margin-bottom:16px;}
+  .about-facts{display:flex; gap:40px; margin-top:30px;}
+  .about-facts div strong{display:block; font-family:var(--font-head); font-size:24px; color:var(--accent);}
+  .about-facts div span{font-size:13px; color:var(--text-muted);}
+
+  /* ============================================
+     STEP 5: SKILLS SECTION
+     Skill bars = div inside div, inner div width = skill %
+  ============================================ */
+  #skills{background:var(--white);}
+  .skills-grid{display:grid; grid-template-columns:1fr 1fr; gap:28px 60px;}
+  .skill-item{margin-bottom:6px;}
+  .skill-top{display:flex; justify-content:space-between; font-weight:600; margin-bottom:8px; font-size:14px;}
+  .skill-bar{background:#E7E9F3; border-radius:20px; height:10px; overflow:hidden;}
+  .skill-fill{background:linear-gradient(90deg, var(--accent), var(--accent-light)); height:100%; border-radius:20px;}
+
+  /* ============================================
+     STEP 6: PROJECTS SECTION
+     auto-fit grid = responsive cards without media queries
+  ============================================ */
+  .projects-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:28px;}
+  .project-card{
+    background:var(--white); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow);
+    transition:.25s ease;
+  }
+  .project-card:hover{transform:translateY(-6px);}
+  .project-thumb{
+    height:170px; background:linear-gradient(135deg,var(--navy),var(--accent));
+    display:flex; align-items:center; justify-content:center; color:white; font-size:14px; font-weight:600;
+  }
+  .project-body{padding:22px;}
+  .project-body h3{font-size:18px; margin-bottom:8px;}
+  .project-body p{color:var(--text-muted); font-size:14px; margin-bottom:14px;}
+  .tag{display:inline-block; background:#EEF1FE; color:var(--accent); font-size:12px; font-weight:600; padding:4px 10px; border-radius:6px; margin-right:6px;}
+
+  /* ============================================
+     STEP 7: RESUME SECTION
+  ============================================ */
+  #resume{
+    background:linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 100%);
+    color:white; text-align:center;
+  }
+  #resume .section-sub{color:#B7BEDA; margin-left:auto; margin-right:auto;}
+  #resume .section-title{color:white;}
+
+  /* ============================================
+     STEP 8: CONTACT SECTION
+  ============================================ */
+  #contact{background:var(--white);}
+  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:50px;}
+  .contact-info div{display:flex; gap:16px; margin-bottom:26px; align-items:flex-start;}
+  .icon-box{
+    width:44px; height:44px; border-radius:10px; background:#EEF1FE; color:var(--accent);
+    display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;
+  }
+  .contact-info h4{font-size:15px; margin-bottom:4px;}
+  .contact-info p{color:var(--text-muted); font-size:14px;}
+  form{display:flex; flex-direction:column; gap:16px;}
+  input, textarea{
+    padding:14px 16px; border:1px solid #E1E4EE; border-radius:8px; font-family:var(--font-body);
+    font-size:14px; background:#FAFBFF;
+  }
+  textarea{resize:vertical; min-height:120px;}
+  input:focus, textarea:focus{outline:2px solid var(--accent); outline-offset:1px;}
+
+  /* ============================================
+     STEP 9: FOOTER
+  ============================================ */
+  footer{
+    background:var(--navy); color:#9AA2C0; text-align:center; padding:30px 8%; font-size:14px;
+  }
+  footer a{color:var(--accent-light); font-weight:600;}
+
+  /* ============================================
+     STEP 10: RESPONSIVE (MOBILE)
+     media query = "if screen width is small, apply these rules"
+  ============================================ */
+  @media (max-width:850px){
+    nav{display:none;}
+    .menu-toggle{display:block;}
+    #home, #about, .contact-grid{grid-template-columns:1fr;}
+    #home{text-align:center; padding-top:160px;}
+    .hero-btns{justify-content:center;}
+    .about-photo{max-width:280px; margin:0 auto;}
+    .skills-grid{grid-template-columns:1fr;}
+    #home h1{font-size:32px;}
+  }
+</style>
+</head>
+<body>
+
+  <!-- ================= HEADER / NAV ================= -->
+  <header>
+    <div class="logo">Tonmoy<span>.</span></div>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#resume">Resume</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <button class="menu-toggle">&#9776;</button>
+  </header>
+
+  <!-- ================= HOME / HERO ================= -->
+  <section id="home">
+    <div>
+      <span class="eyebrow">Hello, I'm</span>
+      <h1>Tonmoy<br>Software Developer &amp; CSE Student</h1>
+      <p>I build clean, functional websites and applications. Currently studying Computer Science &amp; Engineering, passionate about web development and problem solving.</p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn btn-primary">Hire Me</a>
+        <a href="#projects" class="btn btn-outline">View Work</a>
+      </div>
+    </div>
+    <div class="avatar-wrap">T</div>
+  </section>
+
+  <!-- ================= ABOUT ================= -->
+  <section id="about">
+    <div class="about-photo">T</div>
+    <div class="about-text">
+      <span class="eyebrow">About Me</span>
+      <h2 class="section-title">A bit about my journey</h2>
+      <p>I'm a Computer Science &amp; Engineering student who loves turning ideas into working software. I focus on writing clean code and building interfaces that are simple to use.</p>
+      <p>Outside of coursework, I practice by building small projects — from web apps to algorithm challenges — to keep sharpening my skills.</p>
+      <div class="about-facts">
+        <div><strong>10+</strong><span>Projects Built</span></div>
+        <div><strong>3+</strong><span>Years Learning</span></div>
+        <div><strong>5+</strong><span>Tech Stacks</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SKILLS ================= -->
+  <section id="skills">
+    <span class="eyebrow">What I Know</span>
+    <h2 class="section-title">Skills</h2>
+    <p class="section-sub">Technologies and tools I use to bring projects to life.</p>
+    <div class="skills-grid">
+      <div class="skill-item">
+        <div class="skill-top"><span>HTML &amp; CSS</span><span>90%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-top"><span>JavaScript</span><span>80%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-top"><span>Python</span><span>75%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:75%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-top"><span>C / C++</span><span>70%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:70%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-top"><span>SQL &amp; Databases</span><span>65%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:65%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-top"><span>Git &amp; GitHub</span><span>80%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROJECTS ================= -->
+  <section id="projects">
+    <span class="eyebrow">My Work</span>
+    <h2 class="section-title">Projects</h2>
+    <p class="section-sub">A few things I've built recently.</p>
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-thumb">Project One</div>
+        <div class="project-body">
+          <h3>Portfolio Website</h3>
+          <p>A responsive personal portfolio built from scratch with HTML &amp; CSS.</p>
+          <span class="tag">HTML</span><span class="tag">CSS</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-thumb">Project Two</div>
+        <div class="project-body">
+          <h3>Student Result Manager</h3>
+          <p>A CRUD app to manage student records using Python and SQL.</p>
+          <span class="tag">Python</span><span class="tag">SQL</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-thumb">Project Three</div>
+        <div class="project-body">
+          <h3>To-Do List App</h3>
+          <p>A task tracker with add, edit, delete features using JavaScript.</p>
+          <span class="tag">JavaScript</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RESUME ================= -->
+  <section id="resume">
+    <span class="eyebrow">Get My Resume</span>
+    <h2 class="section-title">Download My Resume</h2>
+    <p class="section-sub">Want to know more about my education and experience? Download my resume in PDF format.</p>
+    <a href="resume.pdf" download class="btn btn-primary">Download Resume</a>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section id="contact">
+    <span class="eyebrow">Get In Touch</span>
+    <h2 class="section-title">Contact Me</h2>
+    <p class="section-sub">Have a project in mind or just want to say hi? Reach out below.</p>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div>
+          <div class="icon-box">@</div>
+          <div><h4>Email</h4><p>tonmoydas222111@gmail.com</p></div>
+        </div>
+        <div>
+          <div class="icon-box">&#9742;</div>
+          <div><h4>Phone</h4><p>+91 92660 76403</p></div>
+        </div>
+        <div>
+          <div class="icon-box">&#128205;</div>
+          <div><h4>Location</h4><p>Dhaka, Bangladesh</p></div>
+        </div>
+      </div>
+      <form>
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Message" required></textarea>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <p>&copy; 2026 Tonmoy. All rights reserved. Built with <a href="#">HTML &amp; CSS</a>.</p>
+  </footer>
+
+</body>
+</html>
