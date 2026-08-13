@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Simple Calculator</title>
+<style>
+  :root{
+    --bg: #0f172a;
+    --panel: #16213a;
+    --grid-line: #24304d;
+    --accent: #5eead4;
+    --num-btn: #1e2a47;
+    --op-btn: #27395f;
+    --equal-btn: #5eead4;
+    --text: #e8edf5;
+  }
+
+  * { box-sizing: border-box; }
+
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+      linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0/28px 28px,
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0/28px 28px,
+      var(--bg);
+    font-family: 'Courier New', monospace;
+  }
+
+  .calculator{
+    background: var(--panel);
+    border-radius: 18px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    border: 1px solid var(--grid-line);
+  }
+
+  .label{
+    color: var(--accent);
+    font-size: 12px;
+    letter-spacing: 3px;
+    margin: 0 4px 10px;
+    opacity: 0.8;
+  }
+
+  .display{
+    background: #0a1122;
+    color: var(--text);
+    border-radius: 10px;
+    padding: 18px 14px;
+    margin-bottom: 16px;
+    text-align: right;
+    font-size: 32px;
+    min-height: 44px;
+    overflow-x: auto;
+    border: 1px solid var(--grid-line);
+  }
+
+  .buttons{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  button{
+    padding: 16px 0;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: var(--num-btn);
+    color: var(--text);
+    font-family: inherit;
+    transition: transform 0.08s ease, filter 0.15s ease;
+  }
+
+  button:active{
+    transform: translateY(2px) scale(0.97);
+  }
+
+  button:hover{
+    filter: brightness(1.15);
+  }
+
+  .op{ background: var(--op-btn); color: var(--accent); }
+
+  .equal{
+    background: var(--equal-btn);
+    color: #0a1122;
+    font-weight: bold;
+    grid-column: span 2;
+  }
+
+  .clear{
+    background: #5f2740;
+    color: #ffb4c8;
+  }
+
+  .zero{ grid-column: span 2; }
+</style>
+</head>
+<body>
+
+<div class="calculator">
+  <div class="label">CALC.EXE</div>
+
+  <!-- This is where numbers and results are shown -->
+  <div class="display" id="display">0</div>
+
+  <div class="buttons">
+    <button class="clear" onclick="clearDisplay()">C</button>
+    <button class="op" onclick="chooseOperator('/')">÷</button>
+    <button class="op" onclick="chooseOperator('*')">×</button>
+    <button class="op" onclick="chooseOperator('-')">−</button>
+
+    <button onclick="appendNumber('7')">7</button>
+    <button onclick="appendNumber('8')">8</button>
+    <button onclick="appendNumber('9')">9</button>
+    <button class="op" onclick="chooseOperator('+')">+</button>
+
+    <button onclick="appendNumber('4')">4</button>
+    <button onclick="appendNumber('5')">5</button>
+    <button onclick="appendNumber('6')">6</button>
+    <button class="equal" onclick="calculate()" style="grid-row: span 2;">=</button>
+
+    <button onclick="appendNumber('1')">1</button>
+    <button onclick="appendNumber('2')">2</button>
+    <button onclick="appendNumber('3')">3</button>
+
+    <button class="zero" onclick="appendNumber('0')">0</button>
+    <button onclick="appendNumber('.')">.</button>
+  </div>
+</div>
+
+<script>
+  // ---- STEP 1: Variables that remember the calculator's state ----
+  let currentValue = '0';   // what's currently being typed / shown
+  let previousValue = '';   // the number typed before the operator
+  let operator = null;      // which operator was chosen: + - * /
+  let shouldResetScreen = false; // true right after pressing "="
+
+  const display = document.getElementById('display');
+
+  // ---- STEP 2: Update the screen every time state changes ----
+  function updateDisplay() {
+    display.textContent = currentValue;
+  }
+
+  // ---- STEP 3: Handle number/decimal button clicks ----
+  function appendNumber(num) {
+    // if we just showed a result, start fresh on next digit
+    if (shouldResetScreen) {
+      currentValue = '';
+      shouldResetScreen = false;
+    }
+    // avoid multiple decimal points in one number
+    if (num === '.' && currentValue.includes('.')) return;
+
+    // avoid a leading extra zero like "00"
+    if (currentValue === '0' && num !== '.') {
+      currentValue = num;
+    } else {
+      currentValue += num;
+    }
+    updateDisplay();
+  }
+
+  // ---- STEP 4: Handle operator button clicks (+ − × ÷) ----
+  function chooseOperator(op) {
+    if (operator !== null) {
+      // if an operator was already chosen, calculate first
+      calculate();
+    }
+    previousValue = currentValue;
+    operator = op;
+    shouldResetScreen = true;
+  }
+
+  // ---- STEP 5: Perform the actual math using if-else ----
+  function calculate() {
+    if (operator === null || shouldResetScreen) return;
+
+    const prev = parseFloat(previousValue);
+    const curr = parseFloat(currentValue);
+    let result;
+
+    if (operator === '+') {
+      result = prev + curr;
+    } else if (operator === '-') {
+      result = prev - curr;
+    } else if (operator === '*') {
+      result = prev * curr;
+    } else if (operator === '/') {
+      if (curr === 0) {
+        currentValue = 'Error';
+        updateDisplay();
+        operator = null;
+        shouldResetScreen = true;
+        return;
+      }
+      result = prev / curr;
+    }
+
+    currentValue = result.toString();
+    operator = null;
+    shouldResetScreen = true;
+    updateDisplay();
+  }
+
+  // ---- STEP 6: Clear everything back to the start ----
+  function clearDisplay() {
+    currentValue = '0';
+    previousValue = '';
+    operator = null;
+    shouldResetScreen = false;
+    updateDisplay();
+  }
+
+  // ---- STEP 7 (bonus): let the keyboard work too ----
+  document.addEventListener('keydown', function(e) {
+    if (e.key >= '0' && e.key <= '9') appendNumber(e.key);
+    if (e.key === '.') appendNumber('.');
+    if (['+', '-', '*', '/'].includes(e.key)) chooseOperator(e.key);
+    if (e.key === 'Enter' || e.key === '=') calculate();
+    if (e.key === 'Escape') clearDisplay();
+  });
+</script>
+
+</body>
+</html>
